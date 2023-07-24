@@ -35,8 +35,13 @@ cdef extern from "version.h":
 __author__ = 'Damien Churchill <damoxc@gmail.com>'
 __full_version__ = PYMSSQL_VERSION.decode('ascii')
 __version__ = '.'.join(__full_version__.split('.')[:3])
-VERSION = tuple(int(c) for c in __full_version__.split('.')[:3])
 
+# Version hack to allow for 'dev*'
+try:
+    VERSION = tuple(int(c) for c in __full_version__.split('.')[:3])
+except ValueError:
+    VERSION = 0
+    
 # Strives for compliance with DB-API 2.0 (PEP 249)
 # http://www.python.org/dev/peps/pep-0249/
 apilevel = '2.0'
